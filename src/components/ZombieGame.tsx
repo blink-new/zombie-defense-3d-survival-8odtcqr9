@@ -1,9 +1,9 @@
 import { useEffect } from 'react'
 import { useFrame } from '@react-three/fiber'
-import { OrbitControls, Sky, Environment } from '@react-three/drei'
+
 import { Vector3 } from 'three'
 import { useGame } from '../contexts/GameContext'
-import SuburbanEnvironment from './SuburbanEnvironment'
+import Environment from './Environment'
 import Player from './Player'
 import Zombie from './Zombie'
 import { generateZombieSpawns } from '../utils/gameUtils'
@@ -21,7 +21,7 @@ export default function ZombieGame() {
           dispatch({
             type: 'SPAWN_ZOMBIE',
             zombie: {
-              id: `zombie-${Date.now()}-${index}`,
+              id: `zombie-${state.round}-${Date.now()}-${index}`,
               position,
               health: 100,
               speed: 1 + (state.round - 1) * 0.2, // Increase speed each round
@@ -85,17 +85,13 @@ export default function ZombieGame() {
       <pointLight position={[0, 10, 0]} intensity={0.5} />
 
       {/* Environment */}
-      <Sky 
-        distance={450000} 
-        sunPosition={[0, 1, 0]} 
-        inclination={0.49}
-        azimuth={0.25}
-      />
-      <Environment preset="night" />
       <fog attach="fog" args={['#1a1a1a', 30, 100]} />
+      
+      {/* Simple sky color */}
+      <color attach="background" args={['#0a0a0a']} />
 
       {/* Game Objects */}
-      <SuburbanEnvironment />
+      <Environment />
       <Player />
       
       {/* Zombies */}
@@ -111,13 +107,7 @@ export default function ZombieGame() {
         )
       ))}
 
-      {/* Controls - only for development, will be replaced with FPS controls */}
-      <OrbitControls
-        enabled={state.gameStatus === 'menu'}
-        enablePan={false}
-        enableZoom={false}
-        enableRotate={false}
-      />
+
     </>
   )
 }

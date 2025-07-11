@@ -147,7 +147,7 @@ function gameReducer(state: GameState, action: GameAction): GameState {
         gameStatus: 'playing',
         roundStartTime: Date.now(),
         zombiesInRound: 5 + (nextRound - 1) * 2,
-        zombies: [],
+        zombies: [], // Clear zombies with new round
         zombiesKilled: 0,
       }
     }
